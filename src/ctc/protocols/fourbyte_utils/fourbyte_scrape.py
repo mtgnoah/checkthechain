@@ -4,7 +4,7 @@ import typing
 
 from . import fourbyte_db
 from . import fourbyte_spec
-
+import asyncio
 
 #
 # # database population functions
@@ -50,7 +50,7 @@ async def async_build_event_signatures_dataset(
 
 async def async_scrape_function_signatures(
     *,
-    wait_time: typing.Optional[int] = None,
+    wait_time: typing.Optional[int] = 20,
     print_every: typing.Optional[int] = 10000,
     min_id: typing.Optional[int] = None,
 ) -> typing.Sequence[fourbyte_spec.Entry]:
@@ -81,7 +81,7 @@ async def async_scrape_event_signatures(
 async def async_scrape_set(
     url: str,
     *,
-    wait_time: typing.Optional[int] = None,
+    wait_time: typing.Optional[int] = 20,
     print_every: typing.Optional[int] = 10000,
     min_id: typing.Optional[int] = None,
 ) -> typing.Sequence[fourbyte_spec.Entry]:
@@ -121,11 +121,11 @@ async def async_scrape_set(
                     while next_print < len(results):
                         print('scraped', next_print, 'results')
                         next_print += print_every
-
+            await asyncio.sleep(5)
             # wait between responses
-            if wait_time is not None:
-                import asyncio
+            # if wait_time is not None:
+            #     import asyncio
 
-                await asyncio.sleep(wait_time)
+            #     await asyncio.sleep(wait_time)
 
     return results
